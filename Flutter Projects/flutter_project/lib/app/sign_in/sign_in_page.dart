@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_project/app/sign_in/email_sign_in_page.dart';
 
 import '../../services/auth.dart';
 import 'sign_in_button.dart';
@@ -8,12 +9,37 @@ class SignInPage extends StatelessWidget {
   const SignInPage({Key? key, required this. auth}) : super(key: key);
   final AuthBase auth;
 
+  Future<void> _signInWithGoogle() async{
+    try{
+      await auth.signInWithGoogle();
+    }catch(e){
+      print(e.toString());
+    }
+  }
+
+  Future<void> _signInWithFacebook() async{
+    try{
+      await auth.signInWithFacebook();
+    }catch(e){
+      print(e.toString());
+    }
+  }
+
   Future<void> _signInAnonymously() async{
     try{
       await auth.signInAnonymously();
     }catch(e){
       print(e.toString());
     }
+  }
+
+  void _signInWithEmail(BuildContext context){
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+          fullscreenDialog: true,
+          builder: (context) => EmailSignInPage(),
+      )
+    );
   }
 
   @override
@@ -23,12 +49,12 @@ class SignInPage extends StatelessWidget {
         title: const Text('Time Tracker'),
         elevation: 2.0,
       ),
-      body: _buildContent(),
+      body: _buildContent(context),
       backgroundColor: Colors.grey[200],
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -49,7 +75,7 @@ class SignInPage extends StatelessWidget {
           SocialSignInButton(
             text: "Sign in with Google",
             textColor: Colors.black,
-            onPressed: _sign_in_with_google,
+            onPressed: _signInWithGoogle,
             color: Colors.white,
             height: 50.0,
             assetName: 'images/google-logo.png',
@@ -60,7 +86,7 @@ class SignInPage extends StatelessWidget {
           SocialSignInButton(
             text: "Sign in with Facebook",
             textColor: Colors.white,
-            onPressed: _sign_in_with_google,
+            onPressed: _signInWithFacebook,
             color:  Color(0xFF334D92),
             height: 50.0,
             assetName: 'images/facebook-logo.png',
@@ -71,7 +97,7 @@ class SignInPage extends StatelessWidget {
           SignInButton(
             text: "Sign in with email",
             textColor: Colors.white,
-            onPressed: _sign_in_with_google,
+            onPressed: () => _signInWithEmail(context),
             color: Colors.teal[700],
             height: 50.0
           ),
@@ -100,7 +126,4 @@ class SignInPage extends StatelessWidget {
       ),
     );
   }
-}
-void _sign_in_with_google() {
-  print("clicked");
 }
