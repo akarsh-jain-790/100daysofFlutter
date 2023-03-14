@@ -5,7 +5,7 @@ import 'package:flutter_project/app/common_widgets/custom_elevated_button.dart';
 class FormSubmitButton extends CustomElevatedButton{
   FormSubmitButton({
     required String text,
-    required VoidCallback onPressedCall,
+    VoidCallback? onPressedCall,
   }): super(
     child: Text(
       text,
